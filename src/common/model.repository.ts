@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
-import { ModelEntity } from './model.serializer';
+import { ClassTransformOptions, plainToClass } from 'class-transformer';
 import { DeepPartial, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { ModelEntity } from './model.serializer';
 
 @Injectable()
 export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
@@ -36,22 +36,22 @@ export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
 	}
 
 	async createEntity(
-		inputs: DeepPartial<T>,
+		dto: DeepPartial<T>,
 		relations: string[] = [],
 	): Promise<K> {
-		return await this.save(inputs)
-			.then(async (entity) => {
-				return await this.getEntityById((entity as any).id, relations);
+		return await this.save(dto)
+			.then(async (dto) => {
+				return await this.getEntityById((dto as any).id, relations);
 			})
 			.catch((error) => Promise.reject(error));
 	}
 
 	async updateEntity(
-		entity: K,
-		inputs: QueryDeepPartialEntity<T>,
+		id: string,
+		dto: QueryDeepPartialEntity<T>,
 		relations: string[] = [],
 	): Promise<K> {
-		return await this.update(entity.id, inputs)
+		return await this.update(id, dto)
 			.then(async (entity) => {
 				return await this.getEntityById((entity as any).id, relations);
 			})
@@ -66,11 +66,11 @@ export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
 			.catch((error) => Promise.reject(error));
 	}
 
-	transform(model: T, transformOptions = {}): K {
+	transform(model: T, transformOptions: ClassTransformOptions = {}): K {
 		return plainToClass(ModelEntity, model, transformOptions) as K;
 	}
 
-	transformMany(model: T[], transformOptions = {}): K[] {
+	transformMany(model: T[], transformOptions: ClassTransformOptions = {}): K[] {
 		return model.map((model) => this.transform(model, transformOptions));
 	}
 }

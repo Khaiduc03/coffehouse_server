@@ -1,16 +1,27 @@
-import {  Column, PrimaryGeneratedColumn } from 'typeorm';
-export class Base   {
-	@PrimaryGeneratedColumn('uuid')
-	uuid: string;
+import { Expose } from 'class-transformer';
+import { BaseEntity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-	created_at: string;
+export class Base extends BaseEntity {
+	@Expose()
+	@PrimaryGeneratedColumn()
+	id: number | string;
 
-	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-	updated_at: string;
+	@Expose()
+	@Column({ type: 'bigint', default: new Date().getTime() })
+	created_at: number;
 
-	@Column({ type: 'timestamp', default: null })
-	deleted_at: string;
+	@Expose()
+	@Column({ type: 'bigint', default: new Date().getTime() })
+	updated_at: number;
 
-	
+	@Expose()
+	@Column({ type: 'bigint', default: null })
+	deleted_at: number;
+
+	constructor() {
+		super();
+		this.created_at = new Date().getTime();
+		this.updated_at = new Date().getTime();
+		this.deleted_at = null;
+	}
 }
