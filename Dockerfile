@@ -3,22 +3,22 @@ FROM node:18.18.0-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-RUN yarn
+RUN npm i
 
 COPY . .
 
-RUN yarn build
+RUN npm run build
 
 # state node_modules
 FROM node:18.18.0-alpine AS node_modules
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-RUN yarn install --production
+RUN npm install --production
 
 ## stage image
 FROM node:18.18.0-alpine

@@ -5,7 +5,7 @@ import { CustomerEntity } from './customer.entity';
 
 @Entity({ name: 'customer_address' })
 export class CustomerAddressEntity extends Base implements ICustomerAddress {
-	@Column({ type: 'int', length: 256 })
+	@Column({ type: 'int' })
 	customer_id: string | number;
 
 	@ManyToOne(() => CustomerEntity, (customer) => customer.addresses)

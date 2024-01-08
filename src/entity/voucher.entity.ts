@@ -27,11 +27,6 @@ export class VoucherEntity extends Base implements IVoucher {
 	point: number;
 
 	@ManyToMany(() => CustomerEntity, (customer) => customer.vouchers)
-	@JoinTable({
-		name: 'customer_voucher',
-		joinColumn: { name: 'customer_id', referencedColumnName: 'id' },
-		inverseJoinColumn: { name: 'voucher_id', referencedColumnName: 'id' },
-	})
 	customers: CustomerEntity[];
 
 	constructor(voucher: Partial<VoucherEntity>) {

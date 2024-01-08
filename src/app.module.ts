@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
-import { TypeOrmService } from './config/typeorm';
+import typeorm from './config/typeorm';
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -19,9 +19,12 @@ import { TypeOrmService } from './config/typeorm';
 			},
 			envFilePath: '.env',
 			isGlobal: true,
+			load: [typeorm],
 		}),
 		TypeOrmModule.forRootAsync({
-			useClass: TypeOrmService,
+			inject: [ConfigService],
+			useFactory: async (configService: ConfigService) =>
+				configService.get('typeorm'),
 		}),
 	],
 })

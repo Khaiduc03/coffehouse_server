@@ -18,7 +18,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "test -d node_modules/husky && husky install || echo \"husky is not installed\""
+    "prepare": "test -d node_modules/husky && husky install || echo \"husky is not installed\"",
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "migration:run": "npm run typeorm migration:run -- -d ormconfig.ts",
+    "migration:generate": "npm run typeorm -- -d ormconfig.ts migration:generate ./src/database/migrations/$npm_config_name",
+    "migration:create": "npm run typeorm -- migration:create ./src/database/migrations/$npm_config_name",
+    "migration:revert": "npm run typeorm -- -d ormconfig.ts migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -28,6 +33,9 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.1",
     "class-transformer": "^0.5.1",
+    "compression": "^1.7.4",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
     "joi": "^17.11.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",

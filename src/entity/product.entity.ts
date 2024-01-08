@@ -16,8 +16,18 @@ export class ProductEntity extends Base implements IProduct {
 	@Column({ type: 'float' })
 	regular_price: number;
 
-	@ManyToMany(() => CategoriesEntity, (category) => category.products)
-	@JoinTable()
+	@ManyToMany(() => CategoriesEntity, (category) => category.id)
+	@JoinTable({
+		name: 'product_categories',
+		joinColumn: {
+			name: 'categories_id',
+			referencedColumnName: 'id',
+		},
+		inverseJoinColumn: {
+			name: 'product_id',
+			referencedColumnName: 'id',
+		},
+	})
 	categories: CategoriesEntity[];
 
 	@ManyToMany(() => TopingEntity, (topings) => topings.id)

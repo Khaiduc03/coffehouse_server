@@ -1,7 +1,8 @@
 import { IToping } from 'src/interface';
 import { Base } from './base-entity';
-import { Column } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
+@Entity({ name: 'toping' })
 export class TopingEntity extends Base implements IToping {
 	@Column({ type: 'varchar', length: 256 })
 	toping_name: string;

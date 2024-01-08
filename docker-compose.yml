@@ -1,18 +1,24 @@
 version: "3.9"
+
+
 services:
   app:
     env_file:
       - .env
     container_name: coffee_house_server
     # restart: always
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
-    command: yarn dev
+    command: npm run dev
     volumes:
       - .:/app
     ports:
       - "$PORT:$PORT"
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
 
     depends_on:
       - postgres
@@ -22,9 +28,9 @@ services:
     container_name: postgres_coffee_house
     restart: always
     environment:
-      POSTGRES_HOST: ${DB_HOST}
+      POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      OSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
       TZ: 'GMT'
       PGTZ: 'GMT'
@@ -35,10 +41,60 @@ services:
     env_file:
       - .env
 
+  adminer:
+    image: adminer
+    container_name: adminer_coffee_house
+    restart: always
+    ports:
+      - "8000:8080"
+    depends_on:
+      - postgres
+    links:
+      - "postgres"
 
 volumes:
   postgres_coffee_house:
     driver: local
 networks:
   default:
-    driver: bridge    
+    driver: bridge
+
+# version: '3.8'
+
+# x-logging: &default-logging
+#   driver: json-file
+#   options:
+#     max-size: 100m
+#     max-file: 100
+
+# networks:
+#   docker-network:
+#     driver: bridge
+
+# services:
+#   postgres_db:
+#     image: bitnami/postgresql:latest
+#     platform: linux/amd64
+#     ports:
+#       - 5432:5432
+#     restart: always
+#     volumes:
+#       - db-data:/bitnami/postgresql
+#     environment:
+#       - POSTGRESQL_DATABASE=${DB_DATABASE}
+#       - POSTGRESQL_USERNAME=${DB_USERNAME}
+#       - POSTGRESQL_PASSWORD=${DB_PASSWORD}
+#     networks:
+#       - docker-network
+#     logging: *default-logging
+#   adminer:
+#     image: adminer
+#     container_name: adminer_coffee_house
+#     restart: always
+#     ports:
+#       - '8000:8080'
+#     depends_on:
+#       - postgres_db
+
+# volumes:
+#   db-data:
