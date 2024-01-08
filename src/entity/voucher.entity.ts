@@ -1,6 +1,6 @@
 import { IVoucher } from 'src/interface/customer.interface';
+import { Column, Entity, ManyToMany } from 'typeorm';
 import { Base } from './base-entity';
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { CustomerEntity } from './customer.entity';
 
 @Entity({ name: 'voucher' })

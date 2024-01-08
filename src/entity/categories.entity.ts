@@ -1,8 +1,6 @@
 import { ICategories } from 'src/interface';
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { Base } from './base-entity';
-import { ProductEntity } from './product.entity';
-
 
 @Entity({ name: 'categories' })
 export class CategoriesEntity extends Base implements ICategories {
