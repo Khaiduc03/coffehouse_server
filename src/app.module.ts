@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './modules/auth/auth.module';
 import * as Joi from 'joi';
 import typeorm from './config/typeorm';
 @Module({
@@ -26,6 +27,7 @@ import typeorm from './config/typeorm';
 			useFactory: async (configService: ConfigService) =>
 				configService.get('typeorm'),
 		}),
+		AuthModule,
 	],
 })
 export class AppModule {}
