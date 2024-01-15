@@ -1,17 +1,17 @@
+import { plainToClass } from 'class-transformer';
 import { ICustomer } from 'src/interface/customer.interface';
-import { Base } from './base-entity';
 import {
 	Column,
 	Entity,
 	JoinTable,
 	ManyToMany,
 	OneToMany,
-	VirtualColumn,
+	VirtualColumn
 } from 'typeorm';
-import { plainToClass } from 'class-transformer';
+import { Base } from './base-entity';
 import { CustomerAddressEntity } from './customer_address.entity';
-import { VoucherEntity } from './voucher.entity';
 import { OrderEntity } from './order.entity';
+import { VoucherEntity } from './voucher.entity';
 
 @Entity({ name: 'customer' })
 export class CustomerEntity extends Base implements ICustomer {
@@ -27,17 +27,22 @@ export class CustomerEntity extends Base implements ICustomer {
 	})
 	full_name: string;
 
-	@Column({ type: 'varchar', nullable: true })
+	@Column({
+		type: 'varchar',
+		nullable: true,
+		default:
+			'https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_1280.jpg',
+	})
 	avatar: string;
 
-	@Column({ type: 'varchar', length: 50, nullable: true })
+	@Column({ type: 'varchar', length: 50, nullable: true, unique: true })
 	phone_number: string;
 
-	@Column({ type: 'varchar', length: 100, nullable: true })
+	@Column({ type: 'varchar', length: 100, nullable: true, unique: true })
 	email: string;
 
-	@Column({ type: 'varchar' })
-	password_hash: string;
+	@Column({ type: 'varchar', unique: true })
+	password: string;
 
 	@OneToMany(() => CustomerAddressEntity, (address) => address.customer_id)
 	addresses: CustomerAddressEntity[];

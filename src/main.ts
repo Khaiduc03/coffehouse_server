@@ -1,13 +1,16 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import {
 	ExpressAdapter,
 	NestExpressApplication,
 } from '@nestjs/platform-express';
 import * as compression from 'compression';
-import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import { Logger } from '@nestjs/common';
+import helmet from 'helmet';
+import { AppModule } from './app.module';
+import { GlobalExceptionFilter } from './common/filters/global-error.filter';
+import { LoggerMiddleware } from './config/logger.config';
+
 declare const module: any;
 async function bootstrap() {
 	const PORT = process.env.PORT;
@@ -16,8 +19,12 @@ async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(
 		AppModule,
 		new ExpressAdapter(),
-		{ cors: true },
+		{ cors: true, logger: new Logger() },
 	);
+
+	app.use(LoggerMiddleware);
+
+	const { httpAdapter } = app.get(HttpAdapterHost);
 	// app.enable('trust proxy');
 	app.use(helmet());
 	app.use(compression());
@@ -27,6 +34,13 @@ async function bootstrap() {
 			max: 100, // limit each IP to 100 requests per windowMs
 		}),
 	);
+
+	app.useGlobalFilters(
+		// new QueryFailedFilter({ httpAdapter }),
+		// new AllExceptionsFilter({ httpAdapter }),
+		new GlobalExceptionFilter(),
+	);
+	app.useGlobalPipes(new ValidationPipe());
 	await app.listen(process.env.PORT);
 	if (module.hot) {
 		module.hot.accept();

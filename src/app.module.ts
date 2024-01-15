@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './modules/auth/auth.module';
 import * as Joi from 'joi';
 import typeorm from './config/typeorm';
+import { AuthModule } from './modules/auth/auth.module';
+import { CustomerModule } from './modules/customer/customer.module';
+import { SharedModule } from './shared/shared.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -13,7 +15,7 @@ import typeorm from './config/typeorm';
 				NODE_ENV: Joi.string()
 					.valid('development', 'production', 'test')
 					.default('development'),
-				DB_TYPE: Joi.valid('postgres', 'mysql').default('postgres'),
+				DB_TYPE: Joi.valid('postgres').default('postgres'),
 			}),
 			validationOptions: {
 				abortEarly: false,
@@ -28,6 +30,9 @@ import typeorm from './config/typeorm';
 				configService.get('typeorm'),
 		}),
 		AuthModule,
+		CustomerModule,
+		SharedModule,
 	],
+	providers: [],
 })
 export class AppModule {}

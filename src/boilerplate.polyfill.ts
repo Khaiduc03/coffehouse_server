@@ -1,10 +1,10 @@
-import { FindOneOptions, ObjectId } from 'typeorm';
+// import { FindOneOptions, ObjectId } from 'typeorm';
 
-declare module 'typeorm' {
-	interface Repository<Entity> {
-		findOneCustom(
-			id: string | number | Date | ObjectId,
-			options?: FindOneOptions<Entity>,
-		): Promise<Entity | undefined>;
-	}
-}
+// declare module 'typeorm' {
+// 	interface Repository<Entity> {
+// 		findOneCustom(
+// 			id: string | number | Date | ObjectId,
+// 			options?: FindOneOptions<Entity>,
+// 		): Promise<Entity | undefined>;
+// 	}
+// }

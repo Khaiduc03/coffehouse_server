@@ -1,11 +1,11 @@
-
 import { Expose } from 'class-transformer';
 import {
-    BaseEntity,
-    Column,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
+	BaseEntity,
+	Column,
+	Entity,
+	JoinColumn,
+	ManyToOne,
+	PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CustomerEntity } from './customer.entity';
 
@@ -18,11 +18,15 @@ export class KeyTokenEntity extends BaseEntity {
 	@Column({ type: 'varchar' })
 	public_key: string;
 
-	@ManyToOne(() => CustomerEntity, (customer) => customer.id)
-	customer: CustomerEntity;
+	@Column({ type: 'varchar' })
+	curent_refresh_token: string;
 
-	@Column({ type: 'int' })
+	@ManyToOne(() => CustomerEntity, (customer) => customer.id)
+	@JoinColumn({ name: 'customer_id' })
 	customer_id: string | number;
+
+	// @Column({ type: 'int' })
+	// customer_id: string | number;
 
 	constructor(size: Partial<KeyTokenEntity>) {
 		super();

@@ -13,7 +13,7 @@ export interface ICustomer {
 
 	avatar: string | null;
 
-	password_hash: string;
+	password: string;
 }
 
 export interface ICustomerAddress {
