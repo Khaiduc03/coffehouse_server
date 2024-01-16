@@ -23,10 +23,10 @@ export class KeyTokenEntity extends BaseEntity {
 
 	@ManyToOne(() => CustomerEntity, (customer) => customer.id)
 	@JoinColumn({ name: 'customer_id' })
-	customer_id: string | number;
+	customer: CustomerEntity;
 
-	// @Column({ type: 'int' })
-	// customer_id: string | number;
+	@Column({ type: 'int' })
+	customer_id: number | string;
 
 	constructor(size: Partial<KeyTokenEntity>) {
 		super();

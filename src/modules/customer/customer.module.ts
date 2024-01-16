@@ -1,17 +1,34 @@
 import { Module } from '@nestjs/common';
-import { CustomerService } from './customer.service';
-import { CustomerController } from './customer.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CustomerAddressEntity, CustomerEntity } from 'src/entity';
+import {
+	CustomerAddressEntity,
+	CustomerEntity,
+	KeyTokenEntity,
+} from 'src/entity';
+import { CustomerController } from './customer.controller';
+import { CustomerService } from './customer.service';
+
 import { CustomerRepository } from 'src/repositories/customer.repository';
+import { KeyTokenRepository } from 'src/repositories/key-toke.repository';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([CustomerEntity, CustomerAddressEntity])],
+	imports: [
+		TypeOrmModule.forFeature([
+			CustomerEntity,
+			CustomerAddressEntity,
+			KeyTokenEntity,
+		]),
+	],
 	providers: [
 		CustomerService,
 		{
 			provide: 'CustomerRepositoryInterface',
 			useClass: CustomerRepository,
+		},
+
+		{
+			provide: 'KeyTokenRepositoryInterface',
+			useClass: KeyTokenRepository,
 		},
 	],
 	controllers: [CustomerController],
@@ -20,6 +37,11 @@ import { CustomerRepository } from 'src/repositories/customer.repository';
 		{
 			provide: 'CustomerRepositoryInterface',
 			useClass: CustomerRepository,
+		},
+
+		{
+			provide: 'KeyTokenRepositoryInterface',
+			useClass: KeyTokenRepository,
 		},
 	],
 })

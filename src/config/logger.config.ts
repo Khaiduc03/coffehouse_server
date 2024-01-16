@@ -8,7 +8,6 @@ export function LoggerMiddleware(
 ): any {
 	const { ip, method, path: url } = req;
 
-
 	res.on('close', () => {
 		const { statusCode } = res;
 

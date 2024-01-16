@@ -1,5 +1,5 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import {
 	ExpressAdapter,
 	NestExpressApplication,
@@ -24,7 +24,7 @@ async function bootstrap() {
 
 	app.use(LoggerMiddleware);
 
-	const { httpAdapter } = app.get(HttpAdapterHost);
+	// const { httpAdapter } = app.get(HttpAdapterHost);
 	// app.enable('trust proxy');
 	app.use(helmet());
 	app.use(compression());

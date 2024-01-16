@@ -6,7 +6,7 @@ import {
 	JoinTable,
 	ManyToMany,
 	OneToMany,
-	VirtualColumn
+	VirtualColumn,
 } from 'typeorm';
 import { Base } from './base-entity';
 import { CustomerAddressEntity } from './customer_address.entity';

@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 export type JwtPayload = {
-	id: string | number;
+	customer_id: string | number;
 	[key: string]: any;
 };
 
@@ -32,13 +32,24 @@ export class JWTService extends JwtService {
 				privateKey: private_key,
 			});
 
-			const datd = await this.verify(access_token, {
+			// const datd = await this.verify(access_token, {
+			// 	algorithms: ['RS256'],
+			// 	publicKey: public_key,
+			// });
+
+			return { access_token, refresh_token };
+		} catch (error) {
+			throw new BadRequestException('Invalid token');
+		}
+	}
+
+	async verifyToken(token: string, public_key: string) {
+		try {
+			const payload = await this.verify(token, {
 				algorithms: ['RS256'],
 				publicKey: public_key,
 			});
-			console.log(datd);
-
-			return { access_token, refresh_token };
+			return payload;
 		} catch (error) {
 			throw new BadRequestException('Invalid token');
 		}
