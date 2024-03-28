@@ -11,7 +11,7 @@
 		"start": "nest start",
 		"dev": "nest start  --watch",
 		"docker": "sudo docker compose up",
-		"dev:v1": "webpack --config webpack.config.js --watch",
+		"nest": "nest g mo modules/$npm_config_name && nest g co modules/$npm_config_name && nest g s modules/$npm_config_name",
 		"start:debug": "nest start --debug --watch",
 		"start:prod": "node dist/main",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

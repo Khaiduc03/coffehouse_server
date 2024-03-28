@@ -7,6 +7,7 @@ import typeorm from './config/typeorm';
 import { AuthModule } from './modules/auth/auth.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { SharedModule } from './shared/shared.module';
+import { ProductModule } from './modules/product/product.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -32,6 +33,7 @@ import { SharedModule } from './shared/shared.module';
 		AuthModule,
 		CustomerModule,
 		SharedModule,
+		ProductModule,
 	],
 	providers: [],
 })
